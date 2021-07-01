@@ -102,7 +102,7 @@ int qbPreAllocStack_build(  long nb_elements,
   {
     // Allocate element_array
     (*newStack)->element_array=(qbPreAllocStack_t *)malloc(element_size*nb_elements);
-    printf( "oooooo : allocate element_array : pointer = %p - size=%ld\n", (*newStack)->element_array , element_size*nb_elements );
+    // printf( "oooooo : allocate element_array : pointer = %p - size=%ld\n", (*newStack)->element_array , element_size*nb_elements );
     if((*newStack)->element_array==NULL)
     {
         log( 1 ,"%s ERROR-cannot allocate element_array" , log_prefix );
@@ -114,7 +114,7 @@ int qbPreAllocStack_build(  long nb_elements,
   {
     // Allocate stackElement_array
     (*newStack)->stackElement_array=(qbPreAllocStackElement_t *)malloc(sizeof(qbPreAllocStackElement_t)*nb_elements);
-    printf( "oooooo : allocate stackElement_array : pointer = %p - size=%ld\n", (*newStack)->stackElement_array , (sizeof(qbPreAllocStackElement_t)*nb_elements) );
+    // printf( "oooooo : allocate stackElement_array : pointer = %p - size=%ld\n", (*newStack)->stackElement_array , (sizeof(qbPreAllocStackElement_t)*nb_elements) );
     if((*newStack)->stackElement_array==NULL)
     {
         log( 1 ,"%s ERROR-cannot allocate stackElement_array" , log_prefix );
@@ -148,7 +148,7 @@ int qbPreAllocStack_build(  long nb_elements,
         prevStackElement=stackElement;
     }
     (*newStack)->first_stackElement=(*newStack)->stackElement_array;
-    printf( "oooooo : first_stackElement = %p\n" , (*newStack)->first_stackElement );
+    // printf( "oooooo : first_stackElement = %p\n" , (*newStack)->first_stackElement );
     if(rc!=QBPREALLOCSTACK_RC_OK)
     {
         log( 1 ,"%s ERROR-cannot allocate one or several elements" , log_prefix );
@@ -167,7 +167,7 @@ int qbPreAllocStack_build(  long nb_elements,
   qbPreAllocStackElement_t *stackElement = (*newStack)->first_stackElement;
   while( stackElement )
   {
-    printf( "oooooo - StackElement=%p\n", stackElement );
+    // printf( "oooooo - StackElement=%p\n", stackElement );
     stackElement=stackElement->next;
   } 
 */
@@ -181,10 +181,10 @@ int qbPreAllocStack_alloc(qbPreAllocStack_t *stack, void **element)
 
     pthread_mutex_lock(&stack->mutex);
 
-    printf( "oooooo -> qbPreAllocStack_alloc -------------------------\n" );
-    printf( "oooooo    stack->stackElement_array = %p\n" , stack->stackElement_array );
-    printf( "oooooo    stack->element_array = %p\n" , stack->element_array );
-    printf( "oooooo    stack->first_stackElement = %p\n" , stack->first_stackElement );
+    // printf( "oooooo -> qbPreAllocStack_alloc -------------------------\n" );
+    // printf( "oooooo    stack->stackElement_array = %p\n" , stack->stackElement_array );
+    // printf( "oooooo    stack->element_array = %p\n" , stack->element_array );
+    // printf( "oooooo    stack->first_stackElement = %p\n" , stack->first_stackElement );
     qbPreAllocStackElement_t *stackElement=stack->first_stackElement;
     if( stackElement == NULL )
       rc=QBPREALLOCSTACK_RC_OUTOFMEM;
@@ -193,9 +193,9 @@ int qbPreAllocStack_alloc(qbPreAllocStack_t *stack, void **element)
       stack->first_stackElement=stackElement->next;
       long index = (stackElement - stack->stackElement_array) / sizeof(qbPreAllocStackElement_t);
       *element = stack->element_array + index * stack->element_size;
-      printf( "oooooo    index = %ld\n" , index );
-      printf( "oooooo    *element = %p\n" , *element );
-      printf( "oooooo    element_size = %ld\n" , stack->element_size );
+      // printf( "oooooo    index = %ld\n" , index );
+      // printf( "oooooo    *element = %p\n" , *element );
+      // printf( "oooooo    element_size = %ld\n" , stack->element_size );
       stackElement->prev=NULL;
       stackElement->next=NULL;
       if( stack->first_stackElement ) stack->first_stackElement->prev=NULL;
@@ -205,7 +205,7 @@ int qbPreAllocStack_alloc(qbPreAllocStack_t *stack, void **element)
   stackElement = stack->first_stackElement;
   while( stackElement )
   {
-    printf( "oooooo - StackElement=%p\n", stackElement );
+    // printf( "oooooo - StackElement=%p\n", stackElement );
     stackElement=stackElement->next;
   } 
 
@@ -234,7 +234,7 @@ int qbPreAllocStack_free(qbPreAllocStack_t *stack, void *element)
 
 int qbPreAllocStack_destroy(qbPreAllocStack_t *stack)
 {
-    printf( "oooooo -> qbPreAllocStack_destroy\n" );
+    // printf( "oooooo -> qbPreAllocStack_destroy\n" );
     if( stack == NULL )
       return QBPREALLOCSTACK_RC_UNKNOWN;
     int rc=QBPREALLOCSTACK_RC_OK;
@@ -253,7 +253,7 @@ int qbPreAllocStack_destroy(qbPreAllocStack_t *stack)
     if( stack->element_array      != NULL ) free( stack->element_array      );
     if( stack->stackElement_array != NULL ) free( stack->stackElement_array );
     free(stack);
-    printf( "oooooo <- qbPreAllocStack_destroy\n" );
+    // printf( "oooooo <- qbPreAllocStack_destroy\n" );
     pthread_mutex_unlock(&stack->mutex);
     return rc;
 }
